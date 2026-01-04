@@ -3,6 +3,7 @@ package com.acampif.pokedex.repository
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.acampif.pokedex.R
 import com.acampif.pokedex.databinding.ViewholderPokemonBinding
@@ -25,6 +26,12 @@ class PokemonAdapter(
 
         holder.binding.tvNombre.text = pokemon.nombre
         holder.binding.ivPokemon.setImageResource(pokemon.imagen)
+
+        holder.itemView.setOnClickListener { view ->
+            viewModel.seleccionarPokemon(pokemon)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_pokedexFragment_to_detallePokemonFragment)
+        }
     }
 
     override fun getItemCount(): Int = lista.size
