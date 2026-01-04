@@ -10,4 +10,16 @@ class PokemonViewModel : ViewModel(){
 
     val pokemon = MutableLiveData<List<Pokemon>>()
     val pokemonSeleccionado = MutableLiveData<Pokemon>()
+
+    init{
+        obtenerPokemon()
+    }
+
+    fun obtenerPokemon(){
+        pokemon.value = repository.getPokemon()
+    }
+
+    fun seleccionarPokemon(pokemon:Pokemon){
+        pokemonSeleccionado.value = pokemon
+    }
 }

@@ -27,5 +27,14 @@ class PokedexFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(PokemonViewModel::class.java)
 
+        val adapter = PokemonAdapter(emptyList(), viewModel)
+
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = androidx.recyclerview.widget.GridLayoutManager(requireContext(), 2)
+
+        viewModel.pokemon.observe(viewLifecycleOwner) { lista ->
+            adapter.actualizarLista(lista)
+        }
+
     }
 }
