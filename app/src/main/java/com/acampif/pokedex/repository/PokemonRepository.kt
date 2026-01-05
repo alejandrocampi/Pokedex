@@ -19,7 +19,7 @@ class PokemonRepository {
         listaPokemon.add(Pokemon("Charmander", "Nº 004",R.drawable.charmander,
             "La llama de su cola indica su fuerza vital. Si está débil, la llama arderá más tenue.",
             listOf("FUEGO")))
-        listaPokemon.add(Pokemon("Charmelon", "Nº 005",R.drawable.charmeleon,
+        listaPokemon.add(Pokemon("Charmeleon", "Nº 005",R.drawable.charmeleon,
             "Al agitar su ardiente cola, eleva poco a poco la temperatura a su alrededor para sofocar a sus rivales.",
             listOf("FUEGO")))
         listaPokemon.add(Pokemon("Charizard", "Nº 006",R.drawable.charizard,
