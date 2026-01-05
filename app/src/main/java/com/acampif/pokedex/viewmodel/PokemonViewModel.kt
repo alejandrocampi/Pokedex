@@ -33,4 +33,11 @@ class PokemonViewModel : ViewModel(){
     fun seleccionarPokemon(pokemon:Pokemon){
         pokemonSeleccionado.value = pokemon
     }
+
+    fun cambiarFavorito(pokemon: Pokemon){
+        pokemon.favorito = !pokemon.favorito
+        repository.cambiarFavorito(pokemon)
+        this.pokemon.value = this.pokemon.value
+    }
+
 }

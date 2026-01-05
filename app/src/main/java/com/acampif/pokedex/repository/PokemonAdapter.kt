@@ -28,6 +28,17 @@ class PokemonAdapter(
         holder.binding.tvNombre.text = pokemon.nombre
         holder.binding.ivPokemon.setImageResource(pokemon.imagen)
 
+        if(pokemon.favorito){
+            holder.binding.iconFavorite.setImageResource(android.R.drawable.btn_star_big_on)
+        } else {
+            holder.binding.iconFavorite.setImageResource(android.R.drawable.btn_star_big_off)
+        }
+
+        holder.binding.iconFavorite.setOnClickListener {
+            viewModel.cambiarFavorito(pokemon)
+            notifyItemChanged(position)
+        }
+
         holder.itemView.setOnClickListener { view ->
             viewModel.seleccionarPokemon(pokemon)
             Navigation.findNavController(view)

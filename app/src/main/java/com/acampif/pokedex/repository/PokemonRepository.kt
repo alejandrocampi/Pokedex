@@ -38,4 +38,16 @@ class PokemonRepository {
     fun getPokemon(): List<Pokemon>{
         return listaPokemon
     }
+
+    fun cambiarFavorito(pokemon: Pokemon){
+        val index = listaPokemon.indexOf(pokemon)
+        if(index != -1) {
+            listaPokemon[index].favorito = pokemon.favorito
+        }
+    }
+
+    fun getFavoritos(): List<Pokemon>{
+        return listaPokemon.filter { it.favorito }
+    }
+
 }
