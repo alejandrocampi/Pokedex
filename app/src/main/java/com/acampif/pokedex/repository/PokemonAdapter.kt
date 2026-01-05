@@ -24,6 +24,7 @@ class PokemonAdapter(
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
         val pokemon = lista[position]
 
+        holder.binding.tvNumero.text = pokemon.numero
         holder.binding.tvNombre.text = pokemon.nombre
         holder.binding.ivPokemon.setImageResource(pokemon.imagen)
 
