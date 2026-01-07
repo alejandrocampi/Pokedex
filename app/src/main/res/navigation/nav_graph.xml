@@ -22,6 +22,6 @@
     <fragment
         android:id="@+id/favPokemonFragment"
         android:name="com.acampif.pokedex.repository.FavPokemonFragment"
-        android:label="fragment_fav_pokemon"
+        android:label="Favoritos"
         tools:layout="@layout/fragment_fav_pokemon" />
 </navigation>

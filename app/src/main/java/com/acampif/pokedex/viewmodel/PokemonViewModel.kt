@@ -57,4 +57,15 @@ class PokemonViewModel : ViewModel(){
         }
     }
 
+    fun buscarPokemonFavoritos(texto: String){
+        val favoritos = repository.getPokemon().filter { it.favorito }
+        if(texto.isEmpty()){
+            pokemon.value = favoritos
+        } else {
+            pokemon.value = favoritos.filter{
+                it.nombre.contains(texto, ignoreCase = true)
+            }
+        }
+    }
+
 }

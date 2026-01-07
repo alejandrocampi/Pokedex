@@ -79,11 +79,11 @@ class FavPokemonFragment : Fragment() {
                 searchView.queryHint = "Buscar favoritos"
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        viewModel.buscarPokemon(query ?: "")
+                        viewModel.buscarPokemonFavoritos(query ?: "")
                         return true
                     }
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        viewModel.buscarPokemon(newText ?: "")
+                        viewModel.buscarPokemonFavoritos(newText ?: "")
                         return true
                     }
                 })
@@ -94,14 +94,4 @@ class FavPokemonFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun filtrar(texto: String){
-        val favoritos = viewModel.pokemon.value ?: return
-
-        adapter.actualizarLista(
-            if(texto.isEmpty()) favoritos
-            else favoritos.filter {
-                it.nombre.contains(texto, ignoreCase = true)
-            }
-        )
-    }
 }

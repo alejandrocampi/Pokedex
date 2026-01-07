@@ -86,4 +86,9 @@ class PokedexFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.obtenerPokemon()
+    }
 }
