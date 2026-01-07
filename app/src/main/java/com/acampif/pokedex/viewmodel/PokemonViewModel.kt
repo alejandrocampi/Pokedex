@@ -51,4 +51,10 @@ class PokemonViewModel : ViewModel(){
         }
     }
 
+    fun obtenerFavoritos(){
+        pokemon.value = repository.getPokemon().filter {
+            it.favorito
+        }
+    }
+
 }

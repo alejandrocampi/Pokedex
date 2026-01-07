@@ -19,4 +19,9 @@
         android:name="com.acampif.pokedex.repository.DetallePokemonFragment"
         android:label="Detalle"
         tools:layout="@layout/fragment_detalle_pokemon" />
+    <fragment
+        android:id="@+id/favPokemonFragment"
+        android:name="com.acampif.pokedex.repository.FavPokemonFragment"
+        android:label="fragment_fav_pokemon"
+        tools:layout="@layout/fragment_fav_pokemon" />
 </navigation>
