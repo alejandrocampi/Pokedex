@@ -40,4 +40,15 @@ class PokemonViewModel : ViewModel(){
         this.pokemon.value = this.pokemon.value
     }
 
+    fun buscarPokemon(texto: String){
+        val listaCompleta = repository.getPokemon()
+        if(texto.isEmpty()){
+            pokemon.value = listaCompleta
+        } else {
+            pokemon.value = listaCompleta.filter{
+                it.nombre.contains(texto, ignoreCase = true)
+            }
+        }
+    }
+
 }
