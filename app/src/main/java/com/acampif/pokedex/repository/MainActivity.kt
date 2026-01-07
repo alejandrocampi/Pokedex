@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                     (supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
                             as NavHostFragment).navController
 
-                navController.navigate(R.id.action_pokedexFragment_to_favPokemonFragment)
+                navController.navigate(R.id.favPokemonFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)
