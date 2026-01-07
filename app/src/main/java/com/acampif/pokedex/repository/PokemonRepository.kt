@@ -46,8 +46,8 @@ class PokemonRepository {
         }
     }
 
-    fun getFavoritos(): List<Pokemon>{
-        return listaPokemon.filter { it.favorito }
+    fun eliminarPokemon(pokemon: Pokemon){
+        listaPokemon.remove(pokemon)
     }
 
 }

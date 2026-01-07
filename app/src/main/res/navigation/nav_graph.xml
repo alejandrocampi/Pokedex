@@ -24,8 +24,9 @@
         android:name="com.acampif.pokedex.repository.FavPokemonFragment"
         android:label="Favoritos"
         tools:layout="@layout/fragment_fav_pokemon" >
-        <action
-            android:id="@+id/action_favPokemonFragment_to_detallePokemonFragment"
-            app:destination="@id/detallePokemonFragment" />
     </fragment>
+    <action
+        android:id="@+id/action_global_detallePokemonFragment"
+        app:destination="@id/detallePokemonFragment" />
+
 </navigation>

@@ -44,6 +44,12 @@ class PokemonAdapter(
             Navigation.findNavController(view)
                 .navigate(R.id.action_pokedexFragment_to_detallePokemonFragment)
         }
+
+        holder.itemView.setOnClickListener { view ->
+            viewModel.seleccionarPokemon(pokemon)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_global_detallePokemonFragment)
+        }
     }
 
     override fun getItemCount(): Int = lista.size
