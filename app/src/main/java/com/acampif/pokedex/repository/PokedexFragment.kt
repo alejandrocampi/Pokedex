@@ -8,26 +8,31 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.acampif.pokedex.R
 import com.acampif.pokedex.databinding.FragmentPokedexBinding
-import com.acampif.pokedex.viewmodel.PokemonViewModel
+import com.acampif.pokedex.PokemonViewModel
 
 class PokedexFragment : Fragment() {
 
     private lateinit var binding: FragmentPokedexBinding
     private lateinit var viewModel: PokemonViewModel
+    private lateinit var adapter: PokemonAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPokedexBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -37,15 +42,35 @@ class PokedexFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(PokemonViewModel::class.java)
 
-        val adapter = PokemonAdapter(emptyList(), viewModel)
+        adapter = PokemonAdapter(viewModel)
 
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager =
-            androidx.recyclerview.widget.GridLayoutManager(requireContext(), 2)
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        viewModel.pokemon.observe(viewLifecycleOwner) { lista ->
+        viewModel.pokemons.observe(viewLifecycleOwner) { lista ->
             adapter.actualizarLista(lista)
+            if (lista.isEmpty()) {
+                binding.tvNoResultados.visibility = View.VISIBLE
+            } else {
+                binding.tvNoResultados.visibility = View.GONE
+            }
         }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) { mensaje ->
+            if (mensaje != null) {
+                Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
+                viewModel.clearError()
+            }
+        }
+
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.loadMorePokemons()
+                }
+            }
+        })
 
         val swipeHandler = object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -57,7 +82,8 @@ class PokedexFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val posicion = viewHolder.bindingAdapterPosition
-                viewModel.eliminarPokemon(posicion)
+                val pokemon = adapter.getPokemonAt(posicion)
+                viewModel.deletePokemon(pokemon)
             }
         }
         ItemTouchHelper(swipeHandler).attachToRecyclerView(binding.recyclerView)
@@ -85,10 +111,31 @@ class PokedexFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        binding.fabAgregarPokemon.setOnClickListener {
+            mostrarDialogoAgregar()
+        }
+
+        viewModel.loadMorePokemons()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.obtenerPokemon()
+    private fun mostrarDialogoAgregar() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_agregar_pokemon, null)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Nuevo Pokémon")
+            .setView(dialogView)
+            .setPositiveButton("Guardar") { _, _ ->
+                val idStr = dialogView.findViewById<EditText>(R.id.etIdManual).text.toString()
+                val nombre = dialogView.findViewById<EditText>(R.id.etNombreManual).text.toString()
+                val tipo = dialogView.findViewById<EditText>(R.id.etTipoManual).text.toString().lowercase()
+                val desc = dialogView.findViewById<EditText>(R.id.etDescripcionManual).text.toString()
+
+                if (idStr.isNotEmpty() && nombre.isNotEmpty()) {
+                    viewModel.agregarPokemon(idStr.toInt(), nombre, tipo, desc)
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 }

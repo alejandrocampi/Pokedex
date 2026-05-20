@@ -15,10 +15,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.acampif.pokedex.PokemonViewModel
 import com.acampif.pokedex.R
 import com.acampif.pokedex.databinding.FragmentPokedexBinding
-import com.acampif.pokedex.viewmodel.PokemonViewModel
-
 
 class FavPokemonFragment : Fragment() {
 
@@ -26,11 +25,10 @@ class FavPokemonFragment : Fragment() {
     private lateinit var viewModel: PokemonViewModel
     private lateinit var adapter: PokemonAdapter
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPokedexBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,17 +38,19 @@ class FavPokemonFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(PokemonViewModel::class.java)
 
-        adapter = PokemonAdapter(emptyList(), viewModel)
+        adapter = PokemonAdapter(viewModel)
 
-        binding.recyclerView.layoutManager =
-            GridLayoutManager(requireContext(), 2)
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.adapter = adapter
 
-        viewModel.pokemon.observe(viewLifecycleOwner){
-            adapter.actualizarLista(it)
+        viewModel.favoritedPokemons.observe(viewLifecycleOwner) { lista ->
+            adapter.actualizarLista(lista)
+            if (lista.isEmpty()) {
+                binding.tvNoResultados.visibility = View.VISIBLE
+            } else {
+                binding.tvNoResultados.visibility = View.GONE
+            }
         }
-
-        viewModel.obtenerFavoritos()
 
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
@@ -61,8 +61,8 @@ class FavPokemonFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val posicion = viewHolder.bindingAdapterPosition
-                viewModel.eliminarPokemon(posicion)
-                viewModel.obtenerFavoritos()
+                val pokemon = adapter.getPokemonAt(posicion)
+                viewModel.deletePokemon(pokemon)
             }
         }
 
@@ -93,5 +93,4 @@ class FavPokemonFragment : Fragment() {
 
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
-
 }

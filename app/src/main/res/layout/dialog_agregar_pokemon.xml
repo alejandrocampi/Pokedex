@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/etIdManual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Número ID (Ej: 1001)"
+        android:inputType="number"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etNombreManual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del Pokémon"
+        android:inputType="textCapWords"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etTipoManual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tipos separados por coma (fuego,volador)"
+        android:inputType="text"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etDescripcionManual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción"
+        android:inputType="textMultiLine"
+        android:lines="3" />
+</LinearLayout>
